@@ -22,21 +22,22 @@ def get_values_from_sum(file_name, sum_val):
     Returns
     -------
     'file_name'_values.xlsx: A .xlsx file with just the values selected.
+    
     """
+    
+    data = pd.read_excel(f'{file_name}.xlsx')
+    prob = LpProblem("Get elements from sum", LpMaximize)
 
-  data = pd.read_excel(f'{file_name}.xlsx')
-  prob = LpProblem("Get elements from sum", LpMaximize)
+    x = LpVariable.dicts('v', data.Value, 0, cat= 'Binary')
 
-  x = LpVariable.dicts('v', data.Value, 0, cat= 'Binary')
+    prob += lpSum(val*var for val, var in x.items())
+    prob += lpSum(val*var for val, var in x.items()) == sum_val
+    prob.solve()
 
-  prob += lpSum(val*var for val, var in x.items())
-  prob += lpSum(val*var for val, var in x.items()) == sum_val
-  prob.solve()
+    values = []
+    for v in prob.variables():
+        if v.varValue == 1:
+        values.append(float(re.findall("\d+\.\d+", v.name)[0]))
 
-  values = []
-  for v in prob.variables():
-    if v.varValue == 1:
-      values.append(float(re.findall("\d+\.\d+", v.name)[0]))
-
-  selected_data = data.loc[data['Value'].isin(values)]
-  selected_data.to_excel(f'{file_name}_values.xlsx', index=False)
+    selected_data = data.loc[data['Value'].isin(values)]
+    selected_data.to_excel(f'{file_name}_values.xlsx', index=False)
