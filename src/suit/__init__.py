@@ -2,7 +2,7 @@ import warnings
 warnings.simplefilter("ignore", UserWarning)
 
 import re
-from pulp import LpProblem
+from pulp import *
 import pandas as pd
 
 def get_values_from_sum(file_name, sum_val):
