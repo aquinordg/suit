@@ -37,7 +37,7 @@ def get_values_from_sum(file_name, sum_val):
     values = []
     for v in prob.variables():
         if v.varValue == 1:
-        values.append(float(re.findall("\d+\.\d+", v.name)[0]))
+            values.append(float(re.findall("\d+\.\d+", v.name)[0]))
 
     selected_data = data.loc[data['Value'].isin(values)]
     selected_data.to_excel(f'{file_name}_values.xlsx', index=False)
