@@ -1,5 +1,5 @@
 # suit
 
-Some Useful and Interesting Tools
+Smart, Useful and Interesting Tools
  
 - [Documentation]()
